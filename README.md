@@ -1,8 +1,8 @@
 
 # HPR (Human Personality Recognition)
 ## Important
- This code was written like 5 years ago, this was a graduation project for one of my friends.
- all I am going to show here is my 5 y.o notes on how it works, and what struggles did I found along the way.
+ This code was written like 6 years ago, I was (15 y.o), this was a graduation project for one of my friends.
+ all I am going to show here is my 6 y.o notes on how it works, and what struggles did I found along the way.
  don't expect me to understand the code, or even maintain it, its just there for anyone want to take a look at it.
 ## My notes
 ### the beginning
@@ -57,6 +57,8 @@ we're making an empty array, and after that we loop inside the main thread's tre
 and we get one of the rectangle then we get the rectangle area and we add it to the array
 we made and then we calculate the average of those sizes
 
+![alt text](https://github.com/DrunkTaric/hpr/blob/master/outputs/letter_recognition.png?raw=true?raw=true "Title")
+
 #### word size
 we're making an empty array, and after that we loop inside the main thread's dilated_output
 and we get one of the rectangle then we get the rectangle area and we add it to the array
@@ -72,4 +74,55 @@ after this we add these distances on the secound array and then we repeat on all
 main thread's dilated_output, and then we calculate the average of those distances
 
 #### some outputs if you're interested
+![alt text](https://github.com/DrunkTaric/hpr/blob/master/outputs/output_example_1.png?raw=true "Title")
+![alt text](https://github.com/DrunkTaric/hpr/blob/master/outputs/output_example_2.png?raw=true "Title")
+![alt text](https://github.com/DrunkTaric/hpr/blob/master/outputs/output_example_3.png?raw=true "Title")
+![alt text](https://github.com/DrunkTaric/hpr/blob/master/outputs/output_example_4.png?raw=true "Title")
 
+#### Strugles and changing plans while i was working on the project
+i wanted to use the intersect method not only if there is rectangle inside another one
+but also i wanted to be if the rectangle is toucing another rectangle then we merge these two
+together but it had some big issues, first of all if what if i have three rectangles
+but there is only two touching eachother but, if i merge them together the third one
+gonna touch the rectangle that io just made, i had an easy sulotion for this 
+code below (its not finished but i am going to say later why i didn't finish it):
+```python
+edit = False #this going to change to True if there is any intersect happend between two rectangles
+recs = [] #this being the rectangle data the we get from findContours
+while true: #making a loop until we remove any intersects
+    Temp = [] #we need this to store our new rectangles on here first
+    for x in recs:
+        intersecting_rectangles = [] #to store the rectangles that intersect with the rectangle (x)
+        intersecting_rectangles.append(x)
+        for y in recs:
+            if x != y: #to prevent checking itself
+                if intersect(x, y):
+                    edit = true
+                    intersecting_rectangles.append(y)
+        if len(intersecting_rectangles) > 1:
+            Temp.append(make_new_rectangle(intersecting_rectangles))
+        else:
+            Temp.append(x)
+    if not edit: break
+    edit = False #reseting edit on the next loop
+```
+i didn't finish the code, because i found a problem with it, now if we're doing this loop
+just to remove any intersect happening between words, then what if we have 2 words 
+and every word have 3 rectangles but there is only two intersecting and the third one
+going to intersect after we merge the other two together but if we merge it with the third one
+its going to intersect with the other word, so we're basicly going to have a big rectangle
+that contain two words together, and there is no way to prevent that, if you want to know 
+more you can also check how i made a custom 2d array to rectangle function above, and you can 
+also look at the photos for better demonstration
+
+![alt text](https://github.com/DrunkTaric/hpr/blob/master/outputs/my_problem.png?raw=true "Title")
+
+#### Some equations you might be interested in
+##### I have no idea what is that TBH but its looks like how i calculated distances between letters
+![alt text](https://github.com/DrunkTaric/hpr/blob/master/outputs/something_idk.png?raw=true "Title")
+##### If rectangle is inside another
+![alt text](https://github.com/DrunkTaric/hpr/blob/master/outputs/is_inside_another.png?raw=true "Title")
+##### If rectangle is intersecting with another
+![alt text](https://github.com/DrunkTaric/hpr/blob/master/outputs/is_itersecting.png?raw=true "Title")
+## Finally
+If this was helpful to you in any way, drop a star :)
